@@ -4,30 +4,34 @@
   <meta charset="UTF-8">
   <title>Today Quote</title>
   <style>
-    body {
+   html, body {
   margin: 0;
-  padding: 60px 20px;
-  font-family: 'Georgia', 'Times New Roman', serif;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.wrap{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
   background-color: #e8e1cf;
-  background-image: 
-    url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+  background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+}
+
+.box {
+  width: min(900px, 100%);
+  background: #fdf9f1;
+  padding: 56px 48px;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25), inset 0 0 80px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.08);
   text-align: center;
 }
 
-/* กล่องกระดาษ */
-.box {
-  max-width: 900px;
-  margin: auto;
-  background: #fdf9f1;
-  padding: 60px 50px;
-  border-radius: 6px;
-  box-shadow:
-    0 20px 40px rgba(0,0,0,0.25),
-    inset 0 0 80px rgba(0,0,0,0.05);
-  border: 1px solid rgba(0,0,0,0.08);
-}
-
-/* ตัว Quote */
 .quote {
   font-size: 24px;
   line-height: 1.8;
@@ -35,9 +39,8 @@
   white-space: pre-line;
 }
 
-/* ผู้เขียน */
 .author {
-  margin-top: 30px;
+  margin-top: 28px;
   font-size: 15px;
   color: #6b6355;
   font-style: italic;
@@ -81,6 +84,7 @@ document.getElementById("author").innerText = "- " + quotes[random].author;
 
 </body>
 </html>
+
 
 
 
