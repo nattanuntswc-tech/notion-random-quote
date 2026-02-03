@@ -12,17 +12,17 @@
 
   <style>
     :root{
-      --box-w-normal: 900px;
-      --box-h-normal: 240px;
+      --box-w-normal: 560px;
+      --box-h-normal: 150px;
 
-      --box-w-compact: 720px;
-      --box-h-compact: 190px;
+      --box-w-compact: 480px;
+      --box-h-compact: 120px;
 
       --paper: #fdf9f1;
       --ink: #2b2b2b;
       --muted: #6b6b6b;
       --border: rgba(0,0,0,0.08);
-      --shadow: 0 10px 26px rgba(0,0,0,0.16);
+      --shadow: 0 10px 26px rgba(0,0,0,0.14);
     }
 
     html, body{
@@ -46,9 +46,9 @@
     }
 
     .title{
-      font-size: 14px;
+      font-size: 13px;
       letter-spacing: 3px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       color: var(--ink);
       opacity: 0.85;
       font-weight: 500;
@@ -61,17 +61,17 @@
       border: 1px solid var(--border);
       border-radius: 14px;
       box-shadow: var(--shadow);
-      padding: 36px 38px;
+      padding: 18px 22px;
       box-sizing: border-box;
 
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 16px;
+      gap: 10px;
     }
 
     .quote{
-      font-size: 17px;
+      font-size: 15px;
       line-height: 1.6;
       color: var(--ink);
       white-space: pre-line;
@@ -79,7 +79,7 @@
     }
 
     .author{
-      font-size: 13px;
+      font-size: 12px;
       color: var(--muted);
       font-style: italic;
     }
@@ -88,16 +88,17 @@
     body[data-mode="compact"] .box{
       width: min(var(--box-w-compact), 100%);
       height: var(--box-h-compact);
-      padding: 30px 32px;
+      padding: 14px 16px;
+      gap: 8px;
     }
 
     body[data-mode="compact"] .quote{
-      font-size: 16px;
-      line-height: 1.55;
+      font-size: 14px;
     }
+      
 
     body[data-mode="compact"] .author{
-      font-size: 12px;
+      font-size: 11px;
     }
   </style>
 </head>
@@ -146,3 +147,4 @@
   </script>
 </body>
 </html>
+
