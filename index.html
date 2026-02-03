@@ -1,84 +1,162 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Today Quotes</title>
 
   <style>
-    /* กัน scrollbar ใน Notion embed */
-    html, body {
+    :root{
+      /* เปลี่ยนโหมดตรงนี้: normal | compact */
+      --mode: normal;
+
+      /* คุมขนาดกล่อง (ล็อกกว้าง/สูง 2 โหมด) */
+      --box-w-normal: 900px;
+      --box-h-normal: 260px;
+
+      --box-w-compact: 720px;
+      --box-h-compact: 200px;
+
+      /* สี */
+      --paper: #fdf9f1;
+      --ink: #2f2b23;
+      --muted: #6b6355;
+      --border: rgba(0,0,0,0.08);
+      --shadow: 0 10px 28px rgba(0,0,0,0.18);
+    }
+
+    html, body{
       margin: 0;
       padding: 0;
-      height: 100%;
-      overflow: hidden;
-    }
-
-    /* พื้นหลังแนวกระดาษยับ vintage */
-    .wrap {
-      min-height: 100%;
-      display: flex;
-      align-items: flex-start;   /* ชิดบน */
-      justify-content: center;
-      padding: 24px 20px;        /* ระยะบนพอดี */
-      box-sizing: border-box;
+      height: auto;
+      overflow: hidden; /* กัน scrollbar ใน embed */
       background: transparent;
-      text-align: center;
-      font-family: 'Georgia', 'Times New Roman', serif;
+      font-family: Georgia, "Times New Roman", serif;
     }
 
+    .wrap{
+      display: inline-block; /* ทำให้หน้า “หดตามเนื้อหา” */
+      padding: 14px 14px 16px;
+      box-sizing: border-box;
+      text-align: center;
+      background: transparent;
+    }
 
-    /* หัวข้อ */
-    .title {
-      font-size: 15px;
+    .title{
+      font-size: 16px;
       letter-spacing: 3px;
-      margin-bottom: 14px;
-      color: #2f2b23;
+      margin: 0 0 12px 0;
+      color: var(--ink);
+      opacity: 0.95;
       font-weight: 500;
     }
 
-    /* กล่องคำคม */
-    .box {
-      width: min(900px, 100%);
-      background: #fdf9f1;
-      padding: 56px 48px;
-      border-radius: 12px;
-      box-shadow:
-        0 20px 40px rgba(0,0,0,0.25),
-        inset 0 0 80px rgba(0,0,0,0.05);
-      border: 1px solid rgba(0,0,0,0.08);
+    /* กล่องหลัก */
+    .box{
+      width: min(var(--box-w-normal), 100%);
+      height: var(--box-h-normal);
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+
+      /* padding จะถูกปรับด้วย JS อัตโนมัติ */
+      padding: 48px 44px;
+      box-sizing: border-box;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 18px;
     }
 
-    /* ตัวข้อความ */
-    .quote {
-      font-size: 18px;
-      line-height: 1.6;
-      color: #2f2b23;
-      white-space: pre-line; /* รองรับ \n */
+    .quote{
+      color: var(--ink);
+      font-size: 24px;
+      line-height: 1.7;
+      white-space: pre-line;
+      margin: 0;
     }
 
-    /* ผู้เขียน */
-    .author {
-      margin-top: 28px;
+    .author{
+      color: var(--muted);
       font-size: 15px;
-      color: #6b6355;
       font-style: italic;
+      margin: 0;
     }
+
+    /* ✅ โหมด compact */
+    body[data-mode="compact"] .title{
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+    body[data-mode="compact"] .box{
+      width: min(var(--box-w-compact), 100%);
+      height: var(--box-h-compact);
+    }
+    body[data-mode="compact"] .quote{
+      font-size: 20px;
+      line-height: 1.65;
+    }
+    body[data-mode="compact"] .author{
+      font-size: 14px;
+    }
+
+    /* ปุ่มสลับโหมด (ซ่อนไว้เป็นค่าเริ่มต้น ถ้าอยากใช้ให้เอา class hidden ออก) */
+    .controls{
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+    .btn{
+      border: 1px solid var(--border);
+      background: rgba(253,249,241,0.8);
+      padding: 8px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 12px;
+      color: var(--ink);
+    }
+    .hidden{ display:none; }
   </style>
 </head>
 
-<body>
-  <div class="wrap">
-    <div>
-      <div class="title">- Today Quotes -</div>
+<body data-mode="normal">
+  <div class="wrap" id="wrap">
+    <div class="title" id="title">- Today Quotes -</div>
 
-      <div class="box">
-        <div class="quote" id="quote"></div>
-        <div class="author" id="author"></div>
-      </div>
+    <div class="box" id="box">
+      <div class="quote" id="quote"></div>
+      <div class="author" id="author"></div>
+    </div>
+
+    <!-- ถ้าอยากมีปุ่มสลับโหมด/สุ่มใหม่ในเว็บ ให้ลบ class hidden -->
+    <div class="controls hidden">
+      <button class="btn" id="toggleMode">Toggle Mode</button>
+      <button class="btn" id="newQuote">New Quote</button>
     </div>
   </div>
 
   <script>
+    // ========= 1) ตั้งค่าโหมด =========
+    // เปลี่ยนได้ 3 วิธี:
+    // A) ใน URL: ?mode=compact  หรือ ?mode=normal
+    // B) localStorage (ปุ่ม toggle ถ้าเปิดใช้งาน)
+    // C) ค่าเริ่มต้นใน <body data-mode="normal">
+    const params = new URLSearchParams(location.search);
+    const savedMode = localStorage.getItem("quote_mode");
+    const urlMode = params.get("mode");
+
+    const initialMode = (urlMode === "compact" || urlMode === "normal")
+      ? urlMode
+      : (savedMode === "compact" || savedMode === "normal")
+        ? savedMode
+        : document.body.dataset.mode;
+
+    document.body.dataset.mode = initialMode;
+
+    // ========= Quotes =========
     const quotes = [
       { text: "อารมณ์อาจควบคุมเรา ถ้าเราไม่ควบคุมมัน", author: "Jim Rohn" },
       { text: "เริ่มก่อน ไม่ต้องพร้อม", author: "Unknown" },
@@ -94,20 +172,99 @@
       { text: "การประสบความสำเร็จในชีวิตนั้น ไม่ใช่เพราะเราไม่เคยล้มแต่เพราะเราสามารถลุกขึ้นได้ในทุกๆ ครั้งที่ล้ม", author: "Nelson Mandela (เนลสัน แมนเดลา)" },
       { text: "เมื่อคุณพบว่าตัวเองดิ่งลงไปในหลุม สิ่งสำคัญที่สุดที่คุณควรทำคือ อย่าขุดหลุมนั้นให้ลึกกว่าเดิม", author: "Warren Buffett (วอร์เรน บัฟเฟตต์)" },
       { text: "ฉันมักจะทำในสิ่งที่ฉันไม่สามารถทำได้ เพื่อจะได้เรียนรู้วิธีที่จะทำมัน", author: "Pablo Picasso (ปาโบล ปิกัสโซ)" },
-      { text: "Stay Hungry Stay Foolish จงกระหาย และทำตัวให้โง่ตลอดเวลา", author: "Steve Jobs" },
+      { text: "Stay Hungry Stay Foolish\nจงกระหาย และทำตัวให้โง่ตลอดเวลา", author: "Steve Jobs" },
       {
         text: "Live as if you were to die tomorrow.\nLearn as if you were to live forever.\n\nใช้ชีวิตราวกับว่าคุณจะตายพรุ่งนี้\nเรียนรู้ราวกับว่าคุณจะมีชีวิตอยู่ตลอดไป",
         author: "Mahatma Gandhi"
       }
     ];
 
-    const random = Math.floor(Math.random() * quotes.length);
-    document.getElementById("quote").innerText = "“" + quotes[random].text + "”";
-    document.getElementById("author").innerText = "- " + quotes[random].author;
+    const els = {
+      quote: document.getElementById("quote"),
+      author: document.getElementById("author"),
+      box: document.getElementById("box"),
+      wrap: document.getElementById("wrap")
+    };
+
+    function pickRandomQuote(){
+      const random = Math.floor(Math.random() * quotes.length);
+      return quotes[random];
+    }
+
+    // ========= 2) ปรับ padding อัตโนมัติ =========
+    // ไอเดีย: ยิ่งข้อความยาว -> padding น้อยลง (เพื่อไม่ล้น)
+    // แล้วทำ clamp ให้ไม่เล็ก/ใหญ่เกิน
+    function autoPaddingByLength(text){
+      const len = (text || "").replace(/\s+/g, " ").trim().length;
+
+      // ค่าพื้นฐานแยกตามโหมด
+      const mode = document.body.dataset.mode;
+      const baseV = mode === "compact" ? 34 : 44; // padding-vertical base
+      const baseH = mode === "compact" ? 34 : 44; // padding-horizontal base
+
+      // ลด padding ตามความยาว (ปรับเลขได้ตามใจ)
+      const reduce = Math.min(18, Math.floor(len / 28)); // ยาวขึ้นลดมากขึ้น
+      const pv = clamp(baseV - reduce, mode === "compact" ? 22 : 26, baseV);
+      const ph = clamp(baseH - Math.floor(reduce * 0.8), mode === "compact" ? 22 : 28, baseH);
+
+      els.box.style.padding = `${pv}px ${ph}px`;
+    }
+
+    function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+    // ========= 3) Auto-resize (advanced) =========
+    // ส่งความสูงของ widget ออกไป (ใช้ได้ใน platform ที่รองรับ)
+    // Notion อาจไม่ปรับ auto เสมอไป แต่โค้ดนี้ safe.
+    function postHeight(){
+      // ให้รอ layout settle ก่อน
+      requestAnimationFrame(() => {
+        const h = Math.ceil(els.wrap.getBoundingClientRect().height);
+        // ส่งไปหา parent (ถ้า parent ฟังอยู่)
+        window.parent?.postMessage(
+          { type: "resize", height: h, source: "today-quotes-widget" },
+          "*"
+        );
+        // และตั้งความสูงเอกสารให้พอดี (ช่วยบาง embed)
+        document.documentElement.style.height = h + "px";
+        document.body.style.height = h + "px";
+      });
+    }
+
+    function render(){
+      const q = pickRandomQuote();
+      els.quote.innerText = "“" + q.text + "”";
+      els.author.innerText = "- " + q.author;
+
+      autoPaddingByLength(q.text);
+
+      // คำนวณใหม่อีกครั้งหลัง render เพื่อให้สูงพอดี
+      postHeight();
+    }
+
+    // re-render เมื่อ resize หน้าจอ (กัน wrap เปลี่ยนความกว้าง)
+    window.addEventListener("resize", () => {
+      postHeight();
+    });
+
+    // ========= ปุ่ม (ถ้าเปิดใช้) =========
+    const btnToggle = document.getElementById("toggleMode");
+    const btnNew = document.getElementById("newQuote");
+
+    if (btnToggle && btnNew){
+      btnToggle.addEventListener("click", () => {
+        const next = document.body.dataset.mode === "compact" ? "normal" : "compact";
+        document.body.dataset.mode = next;
+        localStorage.setItem("quote_mode", next);
+        render();
+      });
+
+      btnNew.addEventListener("click", () => {
+        render();
+      });
+    }
+
+    // เริ่มทำงาน
+    render();
   </script>
 </body>
 </html>
-
-
-
-
