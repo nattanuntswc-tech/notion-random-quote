@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Today Quote</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f2f2f2;
+      text-align: center;
+    }
+    .box {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .quote {
+      font-size: 22px;
+      line-height: 1.6;
+    }
+    .author {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <div class="quote" id="quote"></div>
+  <div class="author" id="author"></div>
+</div>
+
+<script>
+const quotes = [
+  { text: "อารมณ์อาจควบคุมเรา ถ้าเราไม่ควบคุมมัน", author: "Jim Rohn" },
+  { text: "เริ่มก่อน ไม่ต้องพร้อม", author: "Unknown" },
+  { text: "วินัยคือสะพานเชื่อมเป้าหมายกับความสำเร็จ", author: "Jim Rohn" },
+  { text: "ทำวันนี้ให้ดีที่สุด พรุ่งนี้จะง่ายขึ้น", author: "Putjeeb 😆" }
+];
+
+const random = Math.floor(Math.random() * quotes.length);
+document.getElementById("quote").innerText = "“" + quotes[random].text + "”";
+document.getElementById("author").innerText = "- " + quotes[random].author;
+</script>
+
+</body>
+</html>
