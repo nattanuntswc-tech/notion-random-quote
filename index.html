@@ -6,31 +6,43 @@
   <style>
     body {
   margin: 0;
-  padding: 40px;
-  font-family: 'Segoe UI', sans-serif;
-  background-image: url("https://unsplash.com/photos/white-textile-on-brown-wooden-table-_kUxT8WkoeY?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+  padding: 60px 20px;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background-color: #e8e1cf;
+  background-image: 
+    url("https://www.transparenttextures.com/patterns/paper-fibers.png");
   text-align: center;
 }
 
-    .box {
-      background: white;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    }
-    .quote {
-      font-size: 22px;
-      line-height: 1.6;
-      white-space: pre-line;
-    }
-    .author {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #666;
-    }
+/* กล่องกระดาษ */
+.box {
+  max-width: 900px;
+  margin: auto;
+  background: #fdf9f1;
+  padding: 60px 50px;
+  border-radius: 6px;
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.25),
+    inset 0 0 80px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+/* ตัว Quote */
+.quote {
+  font-size: 24px;
+  line-height: 1.8;
+  color: #2f2b23;
+  white-space: pre-line;
+}
+
+/* ผู้เขียน */
+.author {
+  margin-top: 30px;
+  font-size: 15px;
+  color: #6b6355;
+  font-style: italic;
+}
+
   </style>
 </head>
 <body>
@@ -69,6 +81,7 @@ document.getElementById("author").innerText = "- " + quotes[random].author;
 
 </body>
 </html>
+
 
 
 
